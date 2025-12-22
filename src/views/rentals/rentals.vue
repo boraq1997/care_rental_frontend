@@ -116,49 +116,53 @@
             @hide="resetForm"
             dir="rtl"
         >
-        <div class="grid">
+        <div class="grid mt-3">
             <div class="col">
-                <Select
-                    v-model="rentalForm.vehicle_id"
-                    :options="allVehicles"
-                    optionLabel="brand"
-                    optionValue="vehicle_id"
-                    placeholder="اختر العجلة"
-                    filter
-                    class="w-full"
-                >
-                    <template #value="{ value }">
-                        <span v-if="!selectedVehicle" class="text-500">اختر العجلة</span>
+                <FloatLabel variant="on">
+                    <Select
+                        id="vehicle_id"
+                        v-model="rentalForm.vehicle_id"
+                        :options="allVehicles"
+                        optionLabel="brand"
+                        optionValue="vehicle_id"
+                        filter
+                        class="w-full"
+                    >
+                        <template #value="{ value }">
+                            <span v-if="!selectedVehicle" class="text-500">اختر العجلة</span>
 
-                        <div v-else class="flex align-items-center gap-2">
-                            <i class="fas fa-car text-primary"></i>
-                            <div>
-                                <p class="m-0 font-bold"> {{ selectedVehicle.model }}</p>
+                            <div v-else class="flex align-items-center gap-2">
+                                <i class="fas fa-car text-primary"></i>
+                                <div>
+                                    <p class="m-0 font-bold"> {{ selectedVehicle.model }}</p>
+                                </div>
                             </div>
-                        </div>
-                    </template>
+                        </template>
 
-                    <!-- الخيارات -->
-                    <template #option="{ option }">
-                        <div class="flex align-items-center gap-2">
-                            <i class="pi pi-car text-primary"></i>
-                            <div>
-                                <p class="m-0 font-semibold">{{ option.brand }} {{ option.model }}</p>
-                                <span class="text-xs">{{ option.plate_number }}</span>
+                        <!-- الخيارات -->
+                        <template #option="{ option }">
+                            <div class="flex align-items-center gap-2">
+                                <i class="pi pi-car text-primary"></i>
+                                <div>
+                                    <p class="m-0 font-semibold">{{ option.brand }} {{ option.model }}</p>
+                                    <span class="text-xs">{{ option.plate_number }}</span>
+                                </div>
                             </div>
-                        </div>
-                    </template>
-                </Select>
+                        </template>
+                    </Select>
+                    <label for="vehicle_id_feild"><i class="fas fa-car"/> العجلة</label>
+                </FloatLabel>
             </div>
             <div class="col">
                 <div class="grid">
                     <div class="col">
+                        <FloatLabel variant="on">
                         <Select 
+                            id="customer_feild"
                             v-model="rentalForm.customer_id"
                             :options="allCustomers"
                             optionLabel="fullname"
                             optionValue="customer_id"
-                            placeholder="اختر الزبون"
                             filter
                             class="w-full"
                         >
@@ -187,6 +191,8 @@
                             </template>
                         </Select>
                         <Message severity="warn" size="small" variant="simple"> في حال لم يكن موجود، قم بإضافته</Message>
+                        <label for="customer_feild">الزبون</label>
+                        </FloatLabel>
                     </div>
                     <div class="col-2">
                         <Button v-if="!isAddingNewCustomer" icon="fas fa-plus" aria-label="Save" @click="isAddingNewCustomer = true"/>
@@ -200,72 +206,79 @@
 
             <div class="grid">
                 <div class="col">
-                    <IconField>
-                        <InputIcon class="fas fa-user-tie"/>
-                        <InputText v-model="newCustomerForm.fullname" class="w-full" placeholder="اسم الزبون"/>
-                    </IconField>
+                    <FloatLabel variant="on">
+                        <InputText id="fullname_feild" v-model="newCustomerForm.fullname" class="w-full"/>
+                        <label for="fullname_feild"><i class="fas fa-user-tie"/> اسم الزبون</label>
+                    </FloatLabel>
                 </div>
                 <div class="col">
-                    <DatePicker v-model="newCustomerForm.birthday" placeholder="التولد" showIcon fluid icon="fas fa-calendar" dir="ltr"/>
+                    <FloatLabel variant="on">
+                        <DatePicker id="birthday_feild" v-model="newCustomerForm.birthday" fluid icon="fas fa-calendar" dir="ltr"/>
+                        <label for="birthday_feild"><i class="fas fa-calendar-alt"/> التولد</label>
+                    </FloatLabel>
                 </div>
             </div>
 
-            <div class="grid mb-3">
+            <div class="grid mt-3">
               <div class="col">
-                <IconField>
-                  <InputIcon class="fa-solid fa-address-card"/>
-                  <InputText v-model="newCustomerForm.national_id" placeholder="رقم الهوية الشخصية" fluid/>
-                </IconField>
+                <FloatLabel>
+                  <InputText id="national_id_feild" v-model="newCustomerForm.national_id" fluid/>
+                  <label for="national_id_feild"><i class="fas fa-address-card"/> رقم الهوية الشخصية</label>
+                </FloatLabel>
               </div>
               <div class="col">
-                <IconField>
-                  <InputIcon class="fa-regular fa-id-card"/>
-                  <InputText v-model="newCustomerForm.license_number" placeholder="رقم اجازة السوق" fluid/>
-                </IconField>
+                <FloatLabel>
+                  <InputText id="license_number_feild" v-model="newCustomerForm.license_number" fluid/>
+                  <label for="license_number_feild"><i class="fas fa-id-card"/> اجازة السوق</label>
+                </FloatLabel>
               </div>
             </div>
 
-            <Select 
-              v-model="newCustomerForm.vip_level" 
-              placeholder="اختر نوع العضوية" 
-              :options="[
-                {name: 'ذهبية', value: 'gold'},
-                {name: 'فضية', value: 'silver'},
-                {name: 'برونزية', value: 'bronze'},
-              ]"
-              optionLabel="name"
-              optionValue="value"
-              fluid
-              class="mb-3"
-              />
+            <FloatLabel variant="on" class="mt-3">
+                <Select 
+                    id="vip_levelـfeild"
+                    v-model="newCustomerForm.vip_level" 
+                    :options="[
+                        {name: 'ذهبية', value: 'gold'},
+                        {name: 'فضية', value: 'silver'},
+                        {name: 'برونزية', value: 'bronze'},
+                    ]"
+                    optionLabel="name"
+                    optionValue="value"
+                    fluid
+                    class="mb-3"
+                />
+                <label for="vip_levelـfeild">نوع العضوية</label>
+            </FloatLabel>
+            
 
-              <div class="grid mb-3">
+              <div class="grid mt-3">
                 <div class="col">
-                    <IconField>
-                        <InputIcon class="fas fa-envelope"/>
-                        <InputText v-model="newCustomerForm.email" placeholder="البريد الالكتروني" fluid/>
-                    </IconField>
+                    <FloatLabel variant="on">
+                        <InputText v-model="newCustomerForm.email" fluid/>
+                        <label for="emial_feild"><i class="fas fa-envelope"/> البريد الالكتروني</label>
+                    </FloatLabel>
                 </div>
                 <div class="col">
-                    <IconField>
-                        <InputIcon class="fas fa-map-location-dot"/>
-                        <InputText v-model="newCustomerForm.address" placeholder="العنوان" fluid/>
-                    </IconField>
+                    <FloatLabel variant="on">
+                        <InputText id="address_feild" v-model="newCustomerForm.address" fluid/>
+                        <label for="address_feild"><i class="fas fa-map-location-dot"/> العنوان</label>
+                    </FloatLabel>
                 </div>
               </div>
 
-              <div class="grid">
+              <div class="grid mt-2">
                 <div class="col">
-                    <IconField>
-                        <InputIcon class="fas fa-phone-flip"/>
-                        <InputMask id="basic" v-model="newCustomerForm.phone1" mask="999_9999_9999" placeholder="رقم الهاتف الاول" fluid/>
-                    </IconField>
+                    <FloatLabel variant="on">
+                        <InputMask id="basic phone1_feild" v-model="newCustomerForm.phone1" mask="999_9999_9999" fluid/>
+                        <label for="phone1_feild"><i class="fas fa-phone-flip"/> رقم الهاتف1</label>
+                    </FloatLabel>
                 </div>
                 <div class="col">
-                    <IconField>
-                        <InputIcon class="fas fa-phone-flip"/>
-                        <InputMask id="basic" v-model="newCustomerForm.phone2" mask="999_9999_9999" placeholder="رقم الهاتف الثاني" fluid/>
-                    </IconField>
+                    <FloatLabel variant="on">
+                        <InputMask id="basic phone1_feild" v-model="newCustomerForm.phone2" mask="999_9999_9999" fluid/>
+                        <label for="phone2_feild"><i class="fas fa-phone-flip"/> رقم الهاتف2</label>
+                    </FloatLabel>
                 </div>
               </div>
 
@@ -288,66 +301,75 @@
 
         <div class="grid mb-3">
             <div class="col">
-                <DatePicker 
-                    id="datepicker-12h" 
-                    v-model="rentalForm.start_date" 
-                    showTime 
-                    hourFormat="12" 
-                    showIcon 
-                    iconDisplay="input"
-                    :minDate="minDate"
-                    placeholder="تاريخ ووقت الحجز" 
-                    fluid />
+                <FloatLabel variant="on">
+                    <DatePicker 
+                        id="datepicker-12h start_date_feild" 
+                        v-model="rentalForm.start_date" 
+                        showTime 
+                        hourFormat="12" 
+                        showIcon 
+                        iconDisplay="input"
+                        :minDate="minDate"
+                        fluid 
+                    />
+                    <label for="start_date_feild">تاريخ ووقت الحجز</label>
+                </FloatLabel>
+                
             </div>
             <div class="col">
-                <DatePicker 
-                    id="datepicker-12h" 
-                    v-model="rentalForm.end_date" 
-                    showTime 
-                    hourFormat="12" 
-                    showIcon 
-                    iconDisplay="input"
-                    :minDate="rentalForm.start_date || minDate"
-                    placeholder="تاريخ ووقت الانتهاء" 
-                    fluid 
-                />
+                <FloatLabel variant="on">
+                    <DatePicker 
+                        id="datepicker-12h end_date_feild" 
+                        v-model="rentalForm.end_date" 
+                        showTime 
+                        hourFormat="12" 
+                        showIcon 
+                        iconDisplay="input"
+                        :minDate="rentalForm.start_date || minDate"
+                        fluid 
+                    />
+                    <label for="end_date_feild">تاريخ ووقت الانتهاء</label>
+                </FloatLabel>
             </div>
         </div>
 
         <div class="grid mb-3">
             <div class="col">
-                <Select
-                    v-model="rentalForm.rental_type"
-                    :options="[
-                        {name: 'ساعات', value: 'hours'},
-                        {name: 'كيلومتر', value: 'kilometers'},
-                    ]"
-                    optionLabel="name"
-                    optionValue="value"
-                    placeholder="اختر نوع الحجو"
-                    class="w-full"
-                />
+                <FloatLabel variant="on">
+                    <Select
+                        id="rental_type_feild"
+                        v-model="rentalForm.rental_type"
+                        :options="[
+                            {name: 'ساعات', value: 'hours'},
+                            {name: 'كيلومتر', value: 'kilometers'},
+                        ]"
+                        optionLabel="name"
+                        optionValue="value"
+                        class="w-full"
+                    />
+                    <label for="rental_type_feild">اختر نوع الحجز</label>
+                </FloatLabel>
             </div>
             <div class="col">
-                <IconField>
-                    <InputIcon class="fas fa-sack-dollar"/>
-                    <InputNumber v-model="rentalForm.price_per_unit" inputId="currency-us" mode="currency" placeholder="المبلغ للوحدة" currency="USD" locale="en-US" fluid />
-                </IconField>
+                <FloatLabel variant="on">
+                    <InputNumber v-model="rentalForm.price_per_unit" inputId="currency-us" mode="currency" currency="USD" locale="en-US" fluid />
+                    <label for="price_per_unit_feild"><i class="fas fa-sack-dollar"/> المبلغ للوحدة</label>
+                </FloatLabel>
             </div>
         </div>
 
         <div class="grid mt-3">
             <div class="col">
-                <IconField>
-                    <InputIcon class="fas fa-gas-pump"/>
-                    <InputNumber v-model="rentalForm.fuel_start" placeholder="كمية الوقود الحالية" fluid/>
-                </IconField>
+                <FloatLabel variant="on">
+                    <InputNumber v-model="rentalForm.fuel_start" fluid/>
+                    <label for="fuel_start_feild"><i class="fas fa-gas-pump"/> كمية الوقود الحالية</label>
+                </FloatLabel>
             </div>
             <div class="col">
-                <IconField>
-                    <InputIcon class="fas fa-gauge"/>
-                    <InputNumber v-model="rentalForm.odometer_start" placeholder="عداد الكيلومتر الحالي" fluid/>
-                </IconField>
+                <FloatLabel variant="on">
+                    <InputNumber v-model="rentalForm.odometer_start" fluid/>
+                    <label for="odometer_start_feild"><i class="fas fa-gauge"/> عداد الكيلومتر الحالي</label>
+                </FloatLabel>
             </div>
         </div>
 
@@ -504,6 +526,7 @@ import InputMask from 'primevue/inputmask';
 import InputNumber from 'primevue/inputnumber';
 import Timeline from 'primevue/timeline';
 import Textarea from 'primevue/textarea';
+import FloatLabel from 'primevue/floatlabel';
 
 
 

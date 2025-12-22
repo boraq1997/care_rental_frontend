@@ -49,35 +49,35 @@
 
           <Column field="customer_id" sortable>
             <template #header>
-              <i class="fas fa-hashtag"/>
+              <i class="fas fa-hashtag text-gray-500"/>
             </template>
           </Column>
 
           <Column field="fullname" sortable>
             <template #header>
+              <i class="fas fa-user text-gray-500"/>
               الاسم
-              <i class="fas fa-user"/>
             </template>
           </Column>
 
           <Column field="national_id" sortable>
             <template #header>
+              <i class="fa-solid fa-address-card text-gray-500"/>
               الهوية الشخصية
-              <i class="fa-solid fa-address-card"/>
             </template>
           </Column>
 
           <Column field="license_number" sortable>
             <template #header>
+              <i class="fa-regular fa-id-card text-gray-500"></i>
               اجازة السوق
-              <i class="fa-regular fa-id-card"></i>
             </template>
           </Column>
 
           <Column field="vip_level" sortable>
             <template #header>
+              <i class="fa-solid fa-medal text-gray-500"/>
               نوع العضوية
-              <i class="fa-solid fa-medal"/>
             </template>
             <template #body="{data}">
               <Tag 
@@ -90,39 +90,43 @@
 
           <Column field="birthday" sortable>
             <template #header>
+              <i class="fas fa-calendar text-gray-500"/>
               التولد
-              <i class="fas fa-calendar"/>
             </template>
           </Column>
 
           <Column field="contact.address" sortable>
             <template #header>
+              <i class="fa-solid fa-map-location-dot text-gray-500"/>
               العنوان
-              <i class="fa-solid fa-map-location-dot"/>
             </template>
           </Column>
 
           <Column field="contact.phone1" sortable>
-            رقم الهاتف الاول
-            <i class="fas fa-phone-flip"/>
+            <template #header>
+              <i class="fas fa-phone-flip text-gray-500"/>
+               رقم الهاتف الاول
+            </template>
           </Column>
 
           <Column field="contact.phone2" sortable>
-            رقم الهاتف الثاني
-            <i class="fas fa-phone-flip"/>
+            <template #header>
+              <i class="fas fa-phone-flip text-gray-500"/>
+              رقم الهاتف الثاني
+            </template>
           </Column>
 
           <Column field="contact.email" sortable>
             <template #header>
+              <i class="fas fa-envelope text-gray-500"/>
               البريد الالكتروني
-              <i class="fas fa-envelope"/>
             </template>
           </Column>
 
           <Column>
             <template #header>
+              <i class="fas fa-cogs text-gray-500"/>
               الادارة
-              <i class="fas fa-cogs"/>
             </template>
             <template #body="{data}">
               <Button
@@ -131,6 +135,7 @@
                 rounded
                 variant="outlined"
                 class="p-button-sm ml-2 mr-2"
+                @click="openCustomerLogDialog(data)"
               />
 
               <Button
@@ -153,7 +158,9 @@
             </template>
           </Column>
 
-          <Dialog
+        </DataTable>
+
+        <Dialog
             v-model:visible="addEditCustomersDialogVisible"
             :header="isEditMode ? 'تعديل بيانات الزبون' : 'اضافة زبون جديد'"
             :style="{width: '30vw'}"
@@ -161,75 +168,82 @@
             @hide="resetForm"
             dir="rtl"
           >
-            <div class="grid mb-3">
+            <div class="grid mb-3 mt-3">
               <div class="col">
-                <IconField>
-                  <InputIcon class="fas fa-user-tie"/>
-                  <InputText v-model="customerForm.fullname" placeholder="اسم الزبون" fluid/>
-                </IconField>
+                <FloatLabel variant="on">
+                  <label for="fullname_feild" class="font-semibold mb-2 block"><i class="fas fa-user-tie"/> اسم الزبون</label>
+                  <InputText id="fullname_feild" v-model="customerForm.fullname" fluid/>
+                </FloatLabel>
               </div>
 
               <div class="col">
-                <DatePicker v-model="customerForm.birthday" placeholder="التولد" showIcon fluid iconDisplay="input" dir="ltr"/>
+                <FloatLabel variant="on">
+                  <DatePicker id="birthday_feild" v-model="customerForm.birthday" showIcon fluid iconDisplay="input" dir="ltr"/>
+                  <label for="birthday_feild" class="font-semibold mb-2 block"><i class="fas fa-calendar-alt"/> التولد</label>
+                </FloatLabel>
               </div>
             </div>
 
             <div class="grid mb-3">
               <div class="col">
-                <IconField>
-                  <InputIcon class="fa-solid fa-address-card"/>
-                  <InputText v-model="customerForm.national_id" placeholder="رقم الهوية الشخصية" fluid/>
-                </IconField>
+                <FloatLabel variant="on">
+                  <InputText v-model="customerForm.national_id" fluid/>
+                  <label for="national_id_feild" class="font-semibold mb-2 block"><i class="fa-solid fa-address-card"/> رقم الهوية الشخصية</label>
+                </FloatLabel>
               </div>
               <div class="col">
-                <IconField>
-                  <InputIcon class="fa-regular fa-id-card"/>
-                  <InputText v-model="customerForm.license_number" placeholder="رقم اجازة السوق" fluid/>
-                </IconField>
+                <FloatLabel>
+                  <InputText id="license_number_feild" v-model="customerForm.license_number" fluid/>
+                  <label for="license_number_feild" class="font-semibold mb-2 block"><i class="fas fa-id-card"/> رقم اجازة السوق</label>
+                </FloatLabel>
               </div>
             </div>
 
-            <Select 
-              v-model="customerForm.vip_level" 
-              placeholder="اختر نوع العضوية" 
-              :options="[
-                {name: 'ذهبية', value: 'gold'},
-                {name: 'فضية', value: 'silver'},
-                {name: 'برونزية', value: 'bronze'},
-              ]"
-              optionLabel="name"
-              optionValue="value"
-              fluid
-              class="mb-3"
+            <FloatLabel variant="on">
+              <Select 
+                id="vip_level_feild"
+                v-model="customerForm.vip_level" 
+                :options="[
+                  {name: 'ذهبية', value: 'gold'},
+                  {name: 'فضية', value: 'silver'},
+                  {name: 'برونزية', value: 'bronze'},
+                ]"
+                optionLabel="name"
+                optionValue="value"
+                fluid
+                class="mb-3"
               />
+              <label for="vip_level_feild" class="font-semibold mb-2 block">نوع العضوية</label>
+            </FloatLabel>
+            
 
               <div class="grid mb-3">
                 <div class="col">
-                  <IconField>
-                    <InputIcon class="fas fa-envelope"/>
-                    <InputText v-model="customerForm.email" placeholder="البريد الالكتروني" fluid/>
-                  </IconField>
+                  <FloatLabel variant="on">
+                    <InputText id="email_feild" v-model="customerForm.email" fluid/>
+                    <label for="email_feild" class="font-semibold mb-2 block"><i class="fas fa-envelope"/> البريد الالكتروني</label>
+                  </FloatLabel>
                 </div>
                 <div class="col">
-                  <IconField>
-                    <InputIcon class="fas fa-map-location-dot"/>
-                    <InputText v-model="customerForm.address" placeholder="العنوان" fluid/>
-                  </IconField>
+                  <FloatLabel>
+                    <InputText id="address_feild" v-model="customerForm.address" fluid/>
+                    <label for="address_feild" class="font-semibold mb-2 block"><i class="fas fa-map-location-dot"/> العنوان</label>
+                  </FloatLabel>
                 </div>
               </div>
 
               <div class="grid">
                 <div class="col">
-                  <IconField>
-                    <InputIcon class="fas fa-phone-flip"/>
-                    <InputMask id="basic" v-model="customerForm.phone1" mask="999_9999_9999" placeholder="رقم الهاتف الاول" fluid/>
-                  </IconField>
+                  <FloatLabel variant="on">
+                    <InputMask id="basic phone1_feild" v-model="customerForm.phone1" mask="999_9999_9999" fluid/>
+                    <label for="phone1_feild" class="font-semibold mb-2 block"><i class="fas fa-phone-flip"/> رقم الهاتف الاول</label>
+                  </FloatLabel>
                 </div>
                 <div class="col">
-                  <IconField>
-                    <InputIcon class="fas fa-phone-flip"/>
-                    <InputMask id="basic" v-model="customerForm.phone2" mask="999_9999_9999" placeholder="رقم الهاتف الثاني" fluid/>
-                  </IconField>
+                  <FloatLabel variant="on">
+                    <InputMask id="basic phone2_feild" v-model="customerForm.phone2" mask="999_9999_9999" fluid/>
+                    <label for="phone1_feild" class="font-semibold mb-2 block"><i class="fas fa-phone-flip"/> رقم الهاتف الثاني</label>
+                  </FloatLabel>
                 </div>
               </div>
 
@@ -251,7 +265,236 @@
               </template>
           </Dialog>
 
-        </DataTable>
+        <Dialog
+          v-model:visible="customerHistoryDialogVisible"
+          header="جميع الحجوزات السابقة للمستخدم"
+          :style="{width: '75vw'}"
+          modal
+          dir="rtl"
+          @hide="customerLog = []"
+          maximizable
+        >
+          <DataTable
+            v-model:filters="customerLogFilters"
+            v-model:expandedRows="expandedRows"
+            :value="customerLog"
+            dataKey="rental_id"
+            paginator
+            :rows="10"
+            filterDisplay="menu"
+            :globalFilterFields="['']"
+            responsiveLayout="scroll"
+            class="text-right"
+            tableStyle="min-width: 60rem"
+          >
+            <template #header>
+              <div class="flex justify-between">
+                <FloatLabel variant="on">
+                  <InputText id="customerLogFilterFeild" v-model="customerLogFilters.global.value"/>
+                  <label for="customerLogFilterFeild"><i class="fas fa-search"/> بحث...</label>
+                </FloatLabel>
+              </div>
+            </template>
+
+            <template #empty>
+              <Message severity="warn">لم يتم اضافة اي عمليات تاجير لهذا الزبون</Message>
+            </template>
+
+            <Column expander style="width: 5rem;"/>
+
+            <Column field="rental_id" sortable>
+              <template #header>
+                <i class="fas fa-hashtag"/>
+              </template>
+            </Column>
+
+            <Column feild="start_date" sortable>
+              <template #header>
+                <i class="fas fa-calendar-alt"/>
+                تاريخ الحجز
+              </template>
+            </Column>
+
+            <Column field="price_per_unit">
+              <template #header>
+                <i class="fas fa-dollar-sign text-gray-500"/>
+                سعر الوحدة
+              </template>
+            </Column>
+
+            <Column field="total_price">
+              <template #header>
+                <i class="fas fa-dollar text-gray-500"/>
+                السعر الكلي
+              </template>
+            </Column>
+
+            <Column field="rental_type">
+              <template #header>
+                <i class="fas fa-home text-gray-500"/>
+                نوع الحجز
+              </template>
+            </Column>
+
+            <Column field="status">
+              <tempate #header>
+                <i class="fas fa-home text-gray-500"/>
+                حالة الحجز
+              </tempate>
+            </Column>            
+
+            <template #expansion="slotProps">
+              <div class="">
+                <h5 class="m-0 mt-3">تفاصيل الفرع</h5>
+                <DataTable :value="[slotProps.data.branch]">
+                  <Column field="branch_id">
+                    <template #header>
+                      <i class="fas fa-hashtag text-gray-500"/>
+                    </template>
+                  </Column>
+
+                  <Column field="name">
+                    <template #header>
+                      <i class="fas fa-home text-gray-500"/>
+                      اسم الفرع
+                    </template>
+                  </Column>
+
+                  <Column field="address">
+                    <template #header>
+                      <i class="fas fa-map-location-dot text-gray-500"/>
+                      عنوان الفرع
+                    </template>
+                  </Column>
+
+                  <Column field="phone1">
+                    <template #header>
+                      <i class="fas fa-phone-flip text-gray-500"/>
+                      رقم الهاتف
+                    </template>
+                  </Column>
+
+                  <Column field="is_active">
+                    <template #header>
+                      <i class="fas fa-home text-gray-500"/>
+                      الحالة
+                    </template>
+                    <template #body="{data}">
+                      <Tag
+                        :value="data.is_active == 1 ? 'مفعل' : 'معطل'"
+                        :severity="data.is_active == 1 ? 'success' : 'danger'"
+                      />
+                    </template>
+                  </Column>
+
+                  <Column field="manager.fullname">
+                    <template #header>
+                      <i class="fas fa-user-tie text-gray-500"/>
+                      مدير الفرع
+                    </template>
+                  </Column>
+                </DataTable>
+
+                <h5 class="m-0 mt-3">تفاصيل العجلة</h5>
+                <DataTable :value="[slotProps.data.vehicle]">
+                  <Column field="vehicle_id">
+                    <template #header>
+                      <i class="fas fa-hashtag text-gray-500"/>
+                    </template>
+                  </Column>
+
+                  <Column field="brand" header="الماركة" sortable>
+                    <template #header>
+                      <i class="fa-solid fa-car-side text-gray-500"></i>
+                    </template>
+                  </Column>
+
+                  <Column field="year" header="سنة الصنع" sortable>
+                    <template #header>
+                      <i class="fa-solid fa-calendar-week text-gray-500"></i>
+                    </template>
+                  </Column>
+
+                  <Column field="color">
+                    <template #header>
+                      <i class="fas fa-brush text-gray-500"/>
+                      اللون
+                    </template>
+                  </Column>
+
+                  <Column field="model" header="الموديل" sortable>
+                    <template #header>
+                      <i class="fa-solid fa-car-side text-gray-500"></i>
+                    </template>
+                  </Column>
+
+                  <Column field="plate_number" header="رقم اللوحة" sortable>
+                    <template #header>
+                      <i class="fa-solid fa-id-card text-gray-500"></i>
+                    </template>
+                  </Column>
+
+                  <Column field="owner_type">
+                    <template #header>
+                      <i class="fa-solid fa-users-viewfinder text-gray-500" />
+                      نوع المالك
+                    </template>
+                    <template #body="{ data }">
+                      <Tag v-if="data.owner_type === 'branche'" icon="fas fa-shop" severity="warn" value="المركز" />
+                      <Tag v-if="data.owner_type === 'otherOwner'" icon="fas fa-user" severity="info" value="مستثمر" />
+                    </template>
+                  </Column>
+                </DataTable>
+
+                <h5 class="m-0 mt-3">تم العقد بواسطة</h5>
+                <DataTable :value="[slotProps.data.created_by]">
+                  <Column field="user_id">
+                    <template #header>
+                      <i class="fas fa-hashtag text-gray-500"/>
+                    </template>
+                  </Column>
+
+                  <Column field="fullname" header="الاسم الكامل" sortable>
+                    <template #header>
+                        <i class="fa-solid fa-user text-gray-500"></i>
+                    </template>
+                </Column>
+
+                <Column field="contact.email" header="البريد الالكتروني" sortable>
+                    <template #header>
+                        <i class="fa-solid fa-envelope text-gray-500"></i>
+                    </template>
+                </Column>
+
+                <Column field="contact.phone1" header="رقم الهاتف1" sortable>
+                    <template #header>
+                        <i class="fa-solid fa-phone-flip text-gray-500"></i>
+                    </template>
+                </Column>
+
+                <Column field="contact.phone2" header="رقم الهاتف2" sortable>
+                    <template #header>
+                        <i class="fa-solid fa-phone-flip text-gray-500"></i>
+                    </template>
+                </Column>
+
+                <Column field="contact.address" header="العنوان" sortable>
+                    <template #header>
+                        <i class="fa-solid fa-map-location-dot text-gray-500"></i>
+                    </template>
+                </Column>
+
+                <Column field="role" header="نوع المستخدم" sortable>
+                    <template #header>
+                        <i class="fa-solid fa-user-tie text-gray-500"></i>
+                    </template>
+                </Column>
+                </DataTable>
+              </div>
+            </template>
+          </DataTable>
+
+        </Dialog>
     </div>
 </template>
 <script lang="ts" setup>
@@ -275,6 +518,7 @@ import customersService from "./customersService";
 import Tag from 'primevue/tag';
 import DatePicker from 'primevue/datepicker';
 import InputMask from 'primevue/inputmask';
+import FloatLabel from 'primevue/floatlabel';
 
 const toast = useToast();
 const confirm = useConfirm();
@@ -284,13 +528,18 @@ const isEditMode = ref(false);
 const isLoading = ref(true);
 const isSaving = ref(false);
 const isConfirming = ref(false); // Prevents double confirmation clicks
+const expandedRows = ref();
 
 const filters = reactive({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
 });
 
+const customerLogFilters = reactive({
+  global: {value: null, matchMode: FilterMatchMode.CONTAINS},
+})
+
 const addEditCustomersDialogVisible = ref(false);
-const customerLogDialogVisible = ref(false);
+const customerHistoryDialogVisible = ref(false)
 
 const breadcrumbHome = ref({ icon: "fas fa-home", to: "/" });
 const breadcrumbItems = ref([
@@ -443,7 +692,19 @@ const confirmDeleteCustomer = (customer: any)=> {
 
 const openCustomerLogDialog = async(customer: any)=>{
   if (!customer) return;
-  
+  try {
+    const response = await customersService.getCustomerRentals(customer.customer_id);
+    customerLog.value = response.data;
+    customerHistoryDialogVisible.value = true
+  } catch (err: any) {
+    console.log(err);
+    toast.add({
+      severity: "error",
+      summary: "رسالة خطاء",
+      detail: "حدث خطاء ما اثناء جلب تاريخ الزبون",
+      life: 3000
+    });
+  }
 }
 
 

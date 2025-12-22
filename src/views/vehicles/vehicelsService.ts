@@ -74,7 +74,8 @@ const vehicleService = {
   },
 
   async getVehicleLog(id: number): Promise<void> {
-    await api.get(`/vehicle-logs/vehicle/${id}`);
+    const {data} =  await api.get(`/vehicle-logs/vehicle/${id}`);
+    return data;
   }
 };
 

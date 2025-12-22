@@ -195,40 +195,41 @@
     >
       <div class="flex flex-column gap-4 mt-3">
         <!-- Branch Name -->
-        <IconField>
-          <InputIcon class="fa-solid fa-phone-flip" />
-          <InputText v-model="brancheForm.name" placeholder="اسم المركز" fluid />
-        </IconField>
+        <FloatLabel variant="on">
+          <InputText id="name_feild" v-model="brancheForm.name" fluid />
+          <label for="name_feild"><i class=""/><i class="fa-solid fa-phone-flip"/> اسم المركز</label>
+        </FloatLabel>
 
         <!-- Branch Address -->
-        <IconField>
-          <InputIcon class="fa-solid fa-phone-flip" />
-          <InputText v-model="brancheForm.address" placeholder="عنوان المركز" fluid />
-        </IconField>
+        <FloatLabel variant="on">
+          <InputText id="address_feild" v-model="brancheForm.address" fluid />
+          <label for="address_feild"><i class="fa-solid fa-phone-flip"/> عنوان المركز</label>
+        </FloatLabel>
 
         <!-- Branch Phone Numbers -->
-        <IconField>
-          <InputIcon class="fa-solid fa-phone-flip" />
-          <InputText v-model="brancheForm.phone1" placeholder="رقم هاتف المركز" fluid />
-        </IconField>
-        <IconField>
-          <InputIcon class="fa-solid fa-phone-flip" />
-          <InputText v-model="brancheForm.phone2" placeholder="رقم هاتف المركز2" fluid />
-        </IconField>
+        <FloatLabel variant="on">
+          <InputText id="phone1_feild" v-model="brancheForm.phone1" fluid />
+          <label for="phone1_feild"><i class="fas fa-phone-flip"/> رقم هاتف المركز</label>
+        </FloatLabel>
+
+        <FloatLabel variant="on">
+          <InputText id="phone2_feild" v-model="brancheForm.phone2" fluid />
+          <label for="phone2_feild"><i class="fas fa-phone-flip"/> رقم هاتف المركز</label>
+        </FloatLabel>
 
         <!-- Manager Selection -->
-        <IconField>
-          <InputIcon class="fas fa-user-tie" />
-          <Select 
+        <FloatLabel variant="on">
+          <Select
+            id="manager_id_feild"
             v-model="brancheForm.manager_id" 
             :options="allUsers" 
             filter 
             optionLabel="fullname" 
             optionValue="id" 
-            placeholder="اختر مدير المركز" 
             class="w-full md:w-56" 
           />
-        </IconField>
+          <label for="manager_id_feild"><i class="fas fa-user-tie"/> مدير المركز</label>
+        </FloatLabel>
       </div>
 
       <!-- Dialog Footer -->
@@ -278,6 +279,7 @@ import Accordion from 'primevue/accordion';
 import AccordionPanel from 'primevue/accordionpanel';
 import AccordionHeader from 'primevue/accordionheader';
 import AccordionContent from 'primevue/accordioncontent';
+import FloatLabel from 'primevue/floatlabel';
 
 // Services
 import branchService, { type Branch } from "./branchesService";

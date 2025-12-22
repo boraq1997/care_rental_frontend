@@ -162,7 +162,7 @@
             rounded 
             variant="outlined" 
             class="p-button-sm" 
-            @click="getVehicleLog(data.vehicle_id)" 
+            @click="openVehicleLogVisible(data)" 
           />
 
           <Button
@@ -200,38 +200,50 @@
     >
       <div class="flex flex-column gap-4 mt-3">
         <!-- Vehicle fields -->
-        <IconField>
-          <InputIcon class="fa-solid fa-car" />
-          <InputText v-model="vehicleForm.brand" placeholder="النوع" fluid />
-        </IconField>
+        <FloatLabel variant="on">
+          <InputText for="brand_feild" v-model="vehicleForm.brand" fluid />
+          <label for="brand_feild" class="font-semibold mb-2 block"><i class="fas fa-car"/> النوع</label>
+        </FloatLabel>
 
-        <IconField>
-          <InputIcon class="fa-solid fa-car-side" />
-          <InputText v-model="vehicleForm.model" placeholder="الموديل" fluid />
-        </IconField>
+        <FloatLabel variant="on">
+          <InputText id="model_feild" v-model="vehicleForm.model" fluid />
+          <label for="model_feild" class="font-semibold mb-2 block"><i class="fa-solid fa-car-side"/> الموديل</label>
+        </FloatLabel>
 
-        <IconField>
-          <InputIcon class="fas fa-calendar-alt" />
-          <InputNumber v-model="vehicleForm.year" fluid :useGrouping="false" end="4" placeholder="سنة الصنع" />
-        </IconField>
+        <FloatLabel variant="on">
+          <InputNumber id="year_feild" v-model="vehicleForm.year" fluid :useGrouping="false" end="4" />
+          <label for="year_feild" class="font-semibold mb-2 block"><i class="fas fa-calendar-alt"/> سنة الصنع</label>
+        </FloatLabel>
 
-        <IconField>
-          <InputIcon class="fa-solid fa-brush" />
-          <InputText v-model="vehicleForm.color" placeholder="لون العجلة" fluid />
-        </IconField>
+        <FloatLabel variant="on">
+          <InputText id="color_feild" v-model="vehicleForm.color" fluid />
+          <label for="color_feild" class="font-semibold mb-2 block"><i class="fas fa-brush"/> لون العجلة</label>
+        </FloatLabel>
 
-        <IconField>
-          <InputIcon class="fa-solid fa-hashtag" />
-          <InputText v-model="vehicleForm.plate_number" placeholder="رقم اللوحة" fluid />
-        </IconField>
+        <FloatLabel variant="on">
+          <InputText id="plate_number_feild" v-model="vehicleForm.plate_number" fluid />
+          <label for="plate_number_feild" class="font-semibold mb-2 block"><i class="fas fa-hashtag"/> رقم اللوحة</label>
+        </FloatLabel>
 
-        <Select v-model="vehicleForm.branch_id" :options="allBranches" optionValue="value" optionLabel="name" placeholder="تبعية العجلة" class="w-full" />
+        <FloatLabel variant="on">
+          <Select id="branch_id_feild" v-model="vehicleForm.branch_id" :options="allBranches" optionValue="value" optionLabel="name" class="w-full" />
+          <label for="branch_id_feild" class="font-semibold mb-2 block"><i class=""/> تبعية العجلة</label>
+        </FloatLabel>
 
-        <Select v-model="vehicleForm.owner_type" :options="vehicleOwnerType" optionValue="value" optionLabel="name" placeholder="عائدية العجلة" showClear class="w-full" />
+        <FloatLabel variant="on">
+          <Select id="owner_type_feild" v-model="vehicleForm.owner_type" :options="vehicleOwnerType" optionValue="value" optionLabel="name" placeholder="عائدية العجلة" showClear class="w-full" />
+          <label for="owner_type_feild" class="font-semibold mb-2 block"><i class=""/> عائدية العجلة</label>
+        </FloatLabel>
 
-        <Select v-model="vehicleForm.owner_id" :options="ownerOptions" optionValue="value" optionLabel="name" placeholder="اسم المالك" class="w-full" />
+        <FloatLabel variant="on">
+          <Select id="owner_id_feild" v-model="vehicleForm.owner_id" :options="ownerOptions" optionValue="value" optionLabel="name" class="w-full" />
+          <label for="owner_id_feild" class="font-semibold mb-2 block"><i class=""/> اسم المالك</label>
+        </FloatLabel>
 
-        <Select v-model="vehicleForm.status" :options="vehicleStatus" optionValue="value" optionLabel="name" placeholder="حالة العجلة" class="w-full" />
+        <FloatLabel variant="on">
+          <Select id="status_feild" v-model="vehicleForm.status" :options="vehicleStatus" optionValue="value" optionLabel="name" placeholder="حالة العجلة" class="w-full" />
+          <label for="status_feild" class="font-semibold mb-2 block"><i class=""/> حالة العجلة</label>
+        </FloatLabel>
       </div>
 
       <!-- ====== Footer Buttons ====== -->
@@ -251,6 +263,83 @@
           @click="saveNewVehicle()" 
         />
       </template>
+    </Dialog>
+
+    <Dialog
+      v-model:visible="vehicleLogDialogVisible"
+      header="تاريخ العجلة"
+      :style="{width: '75vw'}"
+      modal
+      maximizable
+      dir="rtl"
+    >
+    <div class="card">
+      <DataTable
+        v-model:filters="vehicleLogFilters"
+        :value="vehicleLogs"
+        dataKey="vehicle_id"
+        paginator
+        :rows="10"
+        filterDisplay="menu"
+        :globalFilterFields="['action', 'date', 'details', 'performed_by.fullname']"
+        responsiveLayout="scroll"
+      >
+        <template #header>
+          <div class="flex justify-between">
+            <IconField>
+              <InputIcon class="fas fa-search"/>
+              <InputText v-model="vehicleLogFilters.global.value" placeholder="بحث..."/>
+            </IconField>
+          </div>
+        </template>
+
+        <template #empty>
+          <Message severity="warn">لم يتم العثور على بيانات</Message>
+        </template>
+
+        <Column field="action" sortable>
+          <template #header>
+            <i class="fas fa-cog text-gray-500"/>
+            العملية
+          </template>
+          <template #body="slotProps">
+            <Tag
+              :value="getActionLabel(slotProps.data.action)"
+              :severity="getActionSeverity(slotProps.data.action)"
+              :icon="getActionIcon(slotProps.data.action)"
+            />
+          </template>
+        </Column>
+
+        <Column field="date" sortable>
+          <template #header>
+            <i class="fas fa-calendar text-gray-500"/>
+            التاريخ
+          </template>
+          <template #body="slotProps">
+            {{
+              slotProps.data.date
+                ? formatDate(slotProps.data.date)
+                : ''
+            }}
+          </template>
+        </Column>
+
+        <Column field="details">
+          <template #header>
+            <i class="fas fa-info text-gray-500"/>
+            البيانات
+          </template>
+        </Column>
+
+        <Column field="performed_by.fullname" sortable>
+          <template #header>
+            <i class="fas fa-user-tie text-gray-500"/>
+            الموظف
+          </template>
+        </Column>
+      </DataTable>
+    </div>
     </Dialog>
   </div>
 </template>
@@ -275,6 +364,7 @@ import Column from "primevue/column";
 import Tag from "primevue/tag";
 import Dialog from "primevue/dialog";
 import InputNumber from "primevue/inputnumber";
+import FloatLabel from 'primevue/floatlabel';
 
 import vehicleService, { type Vehicle } from "../vehicles/vehicelsService";
 import UsersService from "../users/usersService";
@@ -307,11 +397,15 @@ const vehicleLogDialogVisible = ref(false);
 const ownerOptions = ref<any[]>([]); // Owners (either branches or users)
 const allBranches = ref<any[]>([]);  // Branch options
 const allUsers = ref<any[]>([]);     // All users (for filtering)
-const allVehicleLogs = ref<any[]>([]);
+const vehicleLogs = ref<any[]>([]);
 
 // Filters for DataTable
 const vehiclesFilter = reactive({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+});
+
+const vehicleLogFilters = reactive({
+  global: {value: null, matchMode: FilterMatchMode.CONTAINS},
 });
 
 // Vehicle form data
@@ -348,6 +442,35 @@ const breadcrumbItems = ref([
   { label: "العجلات", to: "/vehicles" },
 ]);
 
+function getActionLabel(action: string) {
+  switch (action) {
+    case 'wash': return 'غسيل';
+    case 'maintenance': return 'صيانة';
+    case 'rent': return 'ايجار';
+    case 'infoUpdate': return 'تحديث بيانات';
+    default: return action;
+  }
+}
+
+function getActionSeverity(action: string) {
+  switch (action) {
+    case 'wash': return 'info';
+    case 'maintenance': return 'warn';
+    case 'rent': return 'success';
+    case 'infoUpdate': return 'secondary';
+    default: return 'secondary';
+  }
+}
+
+function getActionIcon(action: string) {
+  switch (action) {
+    case 'wash': return 'fa-solid fa-droplet';
+    case 'maintenance': return 'fa-solid fa-screwdriver-wrench';
+    case 'rent': return 'fa-solid fa-dollar-sign';
+    case 'infoUpdate': return 'fa-solid fa-file-pen';
+    default: return 'fa-solid fa-circle-question';
+  }
+}
 /* ===================================================
    DATA FETCHING FUNCTIONS
 =================================================== */
@@ -372,23 +495,6 @@ const fetchAllVehicles = async () => {
   }
 };
 
-const getVehicleLog = async(vehicleId: number)=> {
-  if (!vehicleId) return;
-  try {
-    const response = await vehicleService.getVehicleLog(vehicleId);
-    allVehicleLogs.value = response.data;
-  } catch (err) {
-    console.log(err)
-    toast.add({
-      severity: 'warn',
-      summary: 'رسالة خطاء',
-      detail: 'لا توجد سجلات لهذه العجلة',
-      life: 3000
-    });
-  } finally {
-    vehicleLogDialogVisible.value = true;
-  }
-}
 
 /**
  * Fetch all branches
@@ -447,6 +553,33 @@ const openAddEditVehiclesDialog = (vehicle: Vehicle | null = null) => {
   fetchAllUsers();
   addEditVehiclesFormDialogVisible.value = true;
 };
+
+const openVehicleLogVisible = async(vehicle: any)=>{
+  vehicleLogs.value = [];
+  if (!vehicle) {
+    toast.add({
+      severity: "warn",
+      summary: "رسالة تنبيه",
+      detail: "حدث خطاء ما اثناء جلب تاريخ العجلة",
+      life: 3000,
+    });
+  } else {
+    try {
+      const response = await vehicleService.getVehicleLog(vehicle.vehicle_id);
+      vehicleLogs.value = response.data;
+
+      vehicleLogDialogVisible.value = true;
+    } catch (err: any) {
+      console.log(err)
+      toast.add({
+        severity: "error",
+        summary: "رسالة خطاء",
+        detail: "حدث خطاء ما اثناء جلب تاريخ العجلة",
+        life: 3000,
+      });
+    }
+  }
+}
 
 /**
  * Resets form to default values
@@ -524,6 +657,18 @@ const confirmDeleteVehicles = (vehicle: Vehicle) => {
     reject: () => (isConfirming.value = false),
   });
 };
+
+const formatDate = (dateStr: string | null | undefined) => {
+  if (!dateStr) return '';
+  const date = new Date(dateStr);
+
+  // الحصول على اليوم والشهر والسنة بصيغة رقمية
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+}
 
 /* ===================================================
    WATCHERS

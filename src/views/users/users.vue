@@ -128,63 +128,77 @@
         >   
 
             <div class="flex flex-column gap-4 mt-3">
-                <IconField>
-                    <InputIcon class="fa-solid fa-user" />
-                    <InputText v-model="userForm.fullname" placeholder="الاسم الكامل" fluid />
-                </IconField>
 
-                <IconField>
-                    <InputIcon class="fa-solid fa-user-tag" />
-                    <InputText v-model="userForm.username" placeholder="اسم المستخدم" fluid />
-                </IconField>
+                <div>
+                  <FloatLabel variant="on">
+                    <label for="fullname_field" class="font-semibold mb-2 block"><i class="fas fa-user"/> الاسم الكامل</label>
+                    <InputText id="fullname_field" v-model="userForm.fullname" fluid />
+                  </FloatLabel>
 
-                <IconField>
-                    <InputIcon class="fas fa-user-lock"/>
-                    <Password v-model="userForm.password" placeholder="كلمة المرور" fluid toggleMask>
+                </div>
+
+                <div>
+                  <FloatLabel variant="on">
+                    <label for="username_field" class="font-semibold mb-2 block"><i class="fas fa-user-tag"/> اسم المستخدم</label>
+                    <InputText id="username_field" v-model="userForm.username" fluid />
+                  </FloatLabel>
+                </div>
+
+
+                <FloatLabel variant="on">
+                    <Password inputId="password_field" v-model="userForm.password" fluid toggleMask>
                         <template #header>
                             <div class="font-semibold text-xm mb-4">صعوبة كلمة المرور</div>
                         </template>
                     </Password>
-                </IconField>
+                    <label for="password_field" class="font-semibold mb-2 block"><i class="fas fa-user-lock"/> كلمة المرور</label>
+                </FloatLabel>
 
-                <IconField>
-                    <InputIcon class="fa-solid fa-user-lock" />
-                    <Password v-model="userForm.password_confirmation" placeholder="تأكيد كلمة المرور" fluid toggleMask/>
-                </IconField>
+                <FloatLabel variant="on">
+                    <Password id="confirm_password_field" v-model="userForm.password_confirmation" fluid toggleMask/>
+                    <label for="confirm_password_field" class="font-semibold mb-2 block"><i class="fas fa-user-lock"/> تاكيد كلمة المرور</label>
+                </FloatLabel>
 
-                <Select
-                  v-model="userForm.branch_id"
-                  :options="allBranches"
-                  optionLabel="name"
-                  optionValue="branch_id"
-                  placeholder="اختر المركز"
-                  class="w-full m:w-56"
-                />
+                
+                <FloatLabel variant="on">
+                  <Select
+                    id="branch_id_field"
+                    v-model="userForm.branch_id"
+                    :options="allBranches"
+                    optionLabel="name"
+                    optionValue="branch_id"
+                    class="w-full md:w-56"
+                  />
+                  <label for="branch_id_field" class="font-semibold mb-2 block"><i class="fa-solid fa-people-roof"/> اختر الفرع</label>
+                </FloatLabel>
 
-                <Select 
+                <FloatLabel variant="on">
+                  <Select
+                    id="role_field"
                     v-model="userForm.role" 
                     :options="roles" 
                     filter 
                     optionLabel="name"
                     optionValue="value" 
-                    placeholder="اختر نوع المستخدم" 
                     class="w-full md:w-56" 
-                    />
+                  />
+                  <label for="role_field" class="font-semibold mb-2 block"><i class="fa-solid fa-user-shield"/> نوع المستخدم</label>
+                </FloatLabel>
 
-                <IconField>
-                    <InputIcon class="fa-solid fa-envelope" />
-                    <InputText v-model="userForm.email" placeholder="البريد الالكتروني" fluid />
-                </IconField>
+                <FloatLabel variant="on">
+                  <label for="email_field" class="font-semibold mb-2 block"><i class="fas fa-envelope"/> البريد الالكتروني</label>
+                  <InputText id="email_field" v-model="userForm.email" fluid />
+                </FloatLabel>
 
-                <IconField>
-                    <InputIcon class="fa-solid fa-phone-flip" />
-                    <InputText v-model="userForm.phone1" placeholder="رقم الهاتف1" fluid />
-                </IconField>
+                <FloatLabel variant="on">
+                  <label for="phone1_field" class="font-semibold mb-2 block"><i class="fa-solid fa-phone-flip"/> رقم الهاتف1</label>
+                  <InputText id="phone1_field" v-model="userForm.phone1" fluid />
+                </FloatLabel>
 
-                <IconField>
-                    <InputIcon class="fa-solid fa-phone-flip" />
-                    <InputText v-model="userForm.phone2" placeholder="رقم الهاتف2" fluid />
-                </IconField>
+                <FloatLabel variant="on">
+                    <InputText id="phone2_field" v-model="userForm.phone2" fluid />
+                    <label for="phone2_field" class="font-semibold mb-2 block"><i class="fas fa-phone-flip"/> رقم الهاتف2</label>
+                </FloatLabel>
             </div>
 
             <template #footer>
@@ -329,6 +343,7 @@ import Dialog from "primevue/dialog";
 import Select from 'primevue/select';
 import Password from 'primevue/password';
 import Tag from "primevue/tag";
+import FloatLabel from 'primevue/floatlabel';
 
 import UsersService, { type CreateUserPayload } from './usersService';
 import { FilterMatchMode } from "@primevue/core/api";

@@ -57,6 +57,11 @@ class CustomerService {
     return response.data;
   }
 
+  async getCustomerRentals(ceustomerId: number): Promise<Customer> {
+    const response: AxiosResponse<Customer> = await api.get(`rentals/customer/${ceustomerId}`);
+    return response.data;
+  }
+
   /**
    * 3. إنشاء زبون جديد
    */
