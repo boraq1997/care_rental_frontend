@@ -88,7 +88,7 @@
             </template>
           </Column>
 
-          <Column field="birthday" sortable>
+          <Column field="birthday" sortable style="width: 7%">
             <template #header>
               <i class="fas fa-calendar text-gray-500"/>
               التولد
@@ -123,7 +123,7 @@
             </template>
           </Column>
 
-          <Column>
+          <Column style="width: 9%">
             <template #header>
               <i class="fas fa-cogs text-gray-500"/>
               الادارة
@@ -134,7 +134,7 @@
                 severity="secondary"
                 rounded
                 variant="outlined"
-                class="p-button-sm ml-2 mr-2"
+                class="p-button-sm ml-1 mr-1"
                 @click="openCustomerLogDialog(data)"
               />
 
@@ -143,7 +143,7 @@
                 severity="secondary"
                 rounded
                 variant="outlined"
-                class="p-button-sm ml-2 mr-2"
+                class="p-button-sm ml-1 mr-1"
                 @click="openAddEditCustomerDialog(data)"
               />
 
@@ -152,7 +152,7 @@
                 severity="danger"
                 rounded
                 variant="outlined"
-                class="p-button-sm ml-2 mr-2"
+                class="p-button-sm ml-1 mr-1"
                 @click="confirmDeleteCustomer(data)"
               />
             </template>
@@ -329,23 +329,23 @@
               </template>
             </Column>
 
-            <Column field="rental_type">
+            <Column field="rental_type" sortable>
               <template #header>
                 <i class="fas fa-home text-gray-500"/>
                 نوع الحجز
               </template>
             </Column>
 
-            <Column field="status">
+            <Column field="status" sortable>
               <tempate #header>
                 <i class="fas fa-home text-gray-500"/>
                 حالة الحجز
               </tempate>
             </Column>            
 
-            <template #expansion="slotProps">
-              <div class="">
-                <h5 class="m-0 mt-3">تفاصيل الفرع</h5>
+            <template #expansion="slotProps" class="">
+              <div class="mr-5 bg-gray-800 p-4 border-round-lg">
+                <Message severity="warn" variant="simple" class="mb-3"> تفاصيل الفرع</Message>
                 <DataTable :value="[slotProps.data.branch]">
                   <Column field="branch_id">
                     <template #header>
@@ -395,7 +395,7 @@
                   </Column>
                 </DataTable>
 
-                <h5 class="m-0 mt-3">تفاصيل العجلة</h5>
+                <Message severity="primary" variant="simple"  class="mt-3 mb-3">تفاصيل العجلة</Message>
                 <DataTable :value="[slotProps.data.vehicle]">
                   <Column field="vehicle_id">
                     <template #header>
@@ -403,13 +403,13 @@
                     </template>
                   </Column>
 
-                  <Column field="brand" header="الماركة" sortable>
+                  <Column field="brand" header="الماركة">
                     <template #header>
                       <i class="fa-solid fa-car-side text-gray-500"></i>
                     </template>
                   </Column>
 
-                  <Column field="year" header="سنة الصنع" sortable>
+                  <Column field="year" header="سنة الصنع">
                     <template #header>
                       <i class="fa-solid fa-calendar-week text-gray-500"></i>
                     </template>
@@ -422,13 +422,13 @@
                     </template>
                   </Column>
 
-                  <Column field="model" header="الموديل" sortable>
+                  <Column field="model" header="الموديل">
                     <template #header>
                       <i class="fa-solid fa-car-side text-gray-500"></i>
                     </template>
                   </Column>
 
-                  <Column field="plate_number" header="رقم اللوحة" sortable>
+                  <Column field="plate_number" header="رقم اللوحة">
                     <template #header>
                       <i class="fa-solid fa-id-card text-gray-500"></i>
                     </template>
@@ -446,7 +446,7 @@
                   </Column>
                 </DataTable>
 
-                <h5 class="m-0 mt-3">تم العقد بواسطة</h5>
+                <Message severity="warn" variant="simple" class="mt-3 mb-3">منظم الحجز</Message>
                 <DataTable :value="[slotProps.data.created_by]">
                   <Column field="user_id">
                     <template #header>
@@ -454,37 +454,37 @@
                     </template>
                   </Column>
 
-                  <Column field="fullname" header="الاسم الكامل" sortable>
+                  <Column field="fullname" header="الاسم الكامل">
                     <template #header>
                         <i class="fa-solid fa-user text-gray-500"></i>
                     </template>
                 </Column>
 
-                <Column field="contact.email" header="البريد الالكتروني" sortable>
+                <Column field="contact.email" header="البريد الالكتروني">
                     <template #header>
                         <i class="fa-solid fa-envelope text-gray-500"></i>
                     </template>
                 </Column>
 
-                <Column field="contact.phone1" header="رقم الهاتف1" sortable>
+                <Column field="contact.phone1" header="رقم الهاتف1">
                     <template #header>
                         <i class="fa-solid fa-phone-flip text-gray-500"></i>
                     </template>
                 </Column>
 
-                <Column field="contact.phone2" header="رقم الهاتف2" sortable>
+                <Column field="contact.phone2" header="رقم الهاتف2">
                     <template #header>
                         <i class="fa-solid fa-phone-flip text-gray-500"></i>
                     </template>
                 </Column>
 
-                <Column field="contact.address" header="العنوان" sortable>
+                <Column field="contact.address" header="العنوان">
                     <template #header>
                         <i class="fa-solid fa-map-location-dot text-gray-500"></i>
                     </template>
                 </Column>
 
-                <Column field="role" header="نوع المستخدم" sortable>
+                <Column field="role" header="نوع المستخدم">
                     <template #header>
                         <i class="fa-solid fa-user-tie text-gray-500"></i>
                     </template>

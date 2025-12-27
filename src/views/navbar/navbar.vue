@@ -160,6 +160,11 @@ const topItems = computed(() => [
     ],
   },
   {
+    label: 'الشركات',
+    icon: 'fas fa-building',
+    command: ()=>router.push('/centers'),
+  },
+  {
     label: 'الفروع',
     icon: 'fa-solid fa-code-branch',
     command: ()=>router.push('/branches')

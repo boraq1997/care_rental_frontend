@@ -37,12 +37,10 @@
             <!-- Table Header with Search -->
             <template #header>
                 <div class="flex justify-between items-center">
-                    <IconField>
-                        <InputIcon>
-                            <i class="pi pi-search" />
-                        </InputIcon>
-                        <InputText v-model="filters.global.value" placeholder="بحث شامل..." />
-                    </IconField>
+                    <FloatLabel variant="on">
+                        <InputText id="global_filter" v-model="filters.global.value" />
+                        <label for="global_filter"><i class="fas fa-search"/> بحث عام</label>
+                    </FloatLabel>
                 </div>
             </template>
 
@@ -252,7 +250,7 @@
             <template #empty>
                 <Message severity="warn">لم يتم العثور على مستخدمين</Message>
             </template>
-            <template #loading> جاري تحميل بيانات الأقسام... </template>
+            <template #loading> جاري تحميل بيانات المستخدمين... </template>
 
             <Column field="brand" header="الماركة" sortable>
               <template #header>
@@ -464,7 +462,6 @@ const openAddEditUserDialog = (user: any = null) => {
   } else {
     resetForm();
   }
-  console.log(currentUserId.value)
   addEditUserFormDialogVisible.value = true;
   getAllBranches()
 };

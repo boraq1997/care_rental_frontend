@@ -28,6 +28,8 @@ import ConfirmationService from 'primevue/confirmationservice';
 // Import PrimeVue Ripple directive for adding ripple effects to components
 import Ripple from 'primevue/ripple';
 
+import Tooltip from 'primevue/tooltip';
+
 // Create the Vue application instance
 const app = createApp(App);
 
@@ -46,6 +48,7 @@ app.component('Toast', Toast);
 
 // Register the ConfirmationService for confirmation dialogs
 app.use(ConfirmationService);
+app.directive('tooltip', Tooltip);
 
 // Register the Ripple directive for adding ripple effects to interactive elements
 app.directive('ripple', Ripple);

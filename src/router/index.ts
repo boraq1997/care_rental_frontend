@@ -6,6 +6,7 @@ import Branches from '../views/branches/branches.vue';
 import Vehicles from '../views/vehicles/vehicles.vue';
 import Customers from '../views/customers/customers.vue';
 import Rentals from '../views/rentals/rentals.vue';
+import centers from '../views/companes/centers.vue';
 
 const routes = [
     {path: '/', name: 'login', component: auth},
@@ -15,6 +16,7 @@ const routes = [
     {path: '/vehicles', name: 'vehicles', component: Vehicles, meta: {requiresAuth: true}},
     {path: '/customers', name: 'customers', component: Customers, meta: {requiresAuth: true}},
     {path: '/rentals', name: 'rentals', component: Rentals, meta: {requiresAuth: true}},
+    {path: '/centers', name: 'centers', component: centers, meta: {requiresAuth: true}},
 ];
 
 // Create the Vue Router instance
